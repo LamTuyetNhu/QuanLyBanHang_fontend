@@ -1,0 +1,60 @@
+<template>
+  <div class="row app__content">
+    <div class="col col-2">
+      <Menu />
+    </div>
+
+    <div class="col col-1"></div>
+
+    <div class="col col-8">
+      <div class="home-product">
+        <h2 class="allcustomer-list app__content">Thêm Khách Hàng</h2>
+
+        <p>{{ message }}</p>
+
+        <CustomerFormAdd
+          :Customer="Customer"
+          @submit:Customer="postCustomer"
+        />
+      </div>
+    </div>
+
+    <div class="col col-1"></div>
+  </div>
+</template>
+
+<script>
+import Menu from "@/components/Menu.vue";
+import CustomerFormAdd from "@/components/CustomerFormAdd.vue";
+import ContactService from "@/services/contact.service";
+
+export default {
+  components: {
+    Menu,
+    CustomerFormAdd,
+  },
+
+  data() {
+    return {
+      Customer: {},
+      message: "",
+    };
+  },
+
+  methods: {
+    async postCustomer(data) {
+      try {
+        await ContactService.createKH(data);
+        this.$router.push({ name: "Customer" });
+        alert("Cập nhật thành công!")
+      } catch (error) {
+        console.log(error);
+        this.message = "Lỗi khi thêm khách hàng";
+      }
+    }
+  },
+  created() {
+    this.message = "";
+  },
+};
+</script>

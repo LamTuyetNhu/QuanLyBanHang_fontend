@@ -1,71 +1,94 @@
 <template>
-  <Form id="staffForm" class="update width-50 w3-container" @submit="submitStaff" :validation-schema="staffFormSchema">
+  <Form
+    id="staffForm"
+    class="update width-50 w3-container"
+    @submit="submitStaff"
+    :validation-schema="staffFormSchema"
+  >
+    <p class="form-label">
+      <label class="update-label">Tên nhân viên</label>
+      <Field
+        id="hotenNV"
+        class="w3-input"
+        type="text"
+        name="hotenNV"
+        v-model="staffLocal.hotenNV"
+        required
+      />
+    </p>
+    <ErrorMessage name="hotenNV" class="error-feedback" />
 
-            <p class="form-label">
-              <label class="update-label">Tên nhân viên</label>
-              <Field
-                id="username"
-                class="w3-input"
-                type="text"
-                name="hoTen"
-                required
-              />
-            </p>
-            <ErrorMessage name="hoTen" class="error-feedback" />
+    <p class="form-label">
+      <label class="update-label">Chức vụ</label>
+      <Field
+        id="chucvu"
+        class="w3-input"
+        type="text"
+        name="chucvu"
+        v-model="staffLocal.chucvu"
+        required
+      />
+    </p>
+    <ErrorMessage name="chucvu" class="error-feedback" />
 
-            <p class="form-label">
-              <label class="update-label">Chức vụ</label>
-              <Field
-                id="username"
-                class="w3-input"
-                type="text"
-                name="hoTen"
-                required
-              />
-            </p>
-            <ErrorMessage name="hoTen" class="error-feedback" />
+    <p class="form-label">
+      <label class="update-label" for="email">Email</label>
+      <Field
+        id="email"
+        class="w3-input"
+        type="email"
+        name="email"
+        v-model="staffLocal.email"
+        required
+      />
+    </p>
+    <ErrorMessage name="email" class="error-feedback" />
 
-            <p class="form-label">
-              <label class="update-label">Password</label>
-              <Field
-                id="password"
-                class="w3-input"
-                type="password"
-                name="password"
-                required
-              />
-            </p>
-            <ErrorMessage name="name" class="error-feedback" />
+    <!-- <p class="form-label">
+      <label class="update-label">Password</label>
+      <Field
+        id="password"
+        class="w3-input"
+        type="password"
+        name="password"
+        v-model="staffLocal.hotenKH"
+        required
+      />
+    </p>
+    <ErrorMessage name="password" class="error-feedback" /> -->
 
-            <p class="form-label">
-              <label class="update-label">Địa chỉ</label>
-              <Field
-                id="address"
-                class="w3-input"
-                type="text"
-                name="diachi"
-                required
-              />
-            </p>
-            <ErrorMessage name="name" class="error-feedback" />
+    <p class="form-label">
+      <label class="update-label">Địa chỉ</label>
+      <Field
+        id="diachi"
+        class="w3-input"
+        type="text"
+        name="diachi"
+        v-model="staffLocal.diachi"
+        required
+      />
+    </p>
+    <ErrorMessage name="diachi" class="error-feedback" />
 
+    <p class="form-label">
+      <label class="update-label">Số điện thoại</label>
+      <Field
+        id="sodt"
+        class="w3-input"
+        type="text"
+        name="sodt"
+        v-model="staffLocal.sodt"
+        required
+      />
+    </p>
+    <ErrorMessage name="sodt" class="error-feedback" />
 
-            <p class="form-label">
-              <label class="update-label">Số điện thoại</label>
-              <Field
-                id="phonenumber"
-                class="w3-input"
-                type="text"
-                name="sodt"
-                required
-              />
-            </p>
-            <ErrorMessage name="name" class="error-feedback" />
-
-            <div class="allcus-form">
-                <button class="allcus-button" type="submit">Thêm</button>
-                <button class="allcus-button" type="submit" @click="goToStaff">Hủy</button>
-            </div>
+    <div class="allcus-form">
+      <button class="allcus-button" type="submit">Cập nhật</button>
+      <button class="allcus-button" type="submit" @click="goToStaff">
+        Hủy
+      </button>
+    </div>
   </Form>
 </template>
 <script>
@@ -77,7 +100,7 @@ export default {
     Field,
     ErrorMessage,
   },
-  emits: ["submit:staff"],
+  emits: ["submit:Staff"],
   props: {
     Staff: { type: Object, required: true },
   },
@@ -94,9 +117,8 @@ export default {
         .min(2, "Chức vụ phải ít nhất 2 ký tự.")
         .max(50, "Chức vụ có nhiều nhất 50 ký tự."),
       diachi: yup.string().max(100, "Địa chỉ tối đa 100 ký tự."),
-      password: yup
-        .string()
-        .min(6, "Mật khẩu phải có 6 ký tự."),
+      email: yup.string().max(100, "Email tối đa 100 ký tự."),
+      password: yup.string().min(6, "Mật khẩu phải có 6 ký tự."),
       sodt: yup
         .string()
         .matches(
@@ -113,11 +135,11 @@ export default {
   },
   methods: {
     submitStaff() {
-      this.$emit("submit:staff", this.staffLocal);
+      this.$emit("submit:Staff", this.staffLocal);
     },
     goToStaff() {
       this.$router.push({ name: "Staff" });
-    }
+    },
   },
 };
 </script>

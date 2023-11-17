@@ -14,7 +14,6 @@
           v-if="Customer"
           @submit:Customer="updateCustomer"
         />
-        <p class="message">{{ message }}</p>
       </div>
     </div>
 
@@ -63,7 +62,7 @@ export default {
       try {
         this.$router.push({ name: "Customer" });
         alert("Cập nhật thành công!")
-        await ContactService.updateKH(this.Customer._id, data);
+        await ContactService.updateKH(data);
       } catch (error) {
         this.message = "Khách hàng cập nhật thất bại.";
         console.log(error);

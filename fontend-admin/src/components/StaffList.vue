@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import ContactService from "@/services/staff.service";
+import ContactService from "@/services/contact.service";
 export default {
   props: {
     Staff: { type: Array, default: [] },
@@ -67,15 +67,19 @@ export default {
       this.retrieveContacts();
       this.activeIndex = -1;
     },
+
     async deleteStaff(customerId) {
       if (confirm("Bạn muốn xóa nhân viên này?")) {
         try {
           await ContactService.deleteNV(customerId);
-          this.refreshList();
+          
         } catch (error) {
           console.log(error);
         }
       }
+      await this.retrieveContacts();
+      // Làm mới trang
+      this.$router.go(0);
     },
   },
 };

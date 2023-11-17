@@ -21,7 +21,7 @@
 <script>
 import Menu from "@/components/Menu.vue";
   import ProductFormAdd from "@/components/ProductFormAdd.vue";
-  // import ContactService from "@/services/contact.service";
+  import ContactService from "@/services/contact.service";
   export default{
       components: {
         Menu,

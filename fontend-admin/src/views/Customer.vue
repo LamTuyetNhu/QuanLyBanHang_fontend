@@ -20,7 +20,7 @@
             type="submit"
             @click="goToAddCustomer"
           >
-          <i class="fa-solid fa-plus"></i>
+          <i class="fa-solid fa-plus"></i> Thêm
           </button>
         </div>
 

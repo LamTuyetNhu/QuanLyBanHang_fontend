@@ -10,8 +10,6 @@
       <div class="home-product">
         <h2 class="allcustomer-list app__content">Thêm Khách Hàng</h2>
 
-        <p>{{ message }}</p>
-
         <CustomerFormAdd
           :Customer="Customer"
           @submit:Customer="postCustomer"
@@ -37,7 +35,6 @@ export default {
   data() {
     return {
       Customer: {},
-      message: "",
     };
   },
 
@@ -49,7 +46,8 @@ export default {
         alert("Cập nhật thành công!")
       } catch (error) {
         console.log(error);
-        this.message = "Lỗi khi thêm khách hàng";
+        alert("Cập nhật không thành công!")
+
       }
     }
   },

@@ -76,7 +76,6 @@
         Hủy
       </button>
     </div>
-
   </Form>
 </template>
 <script>
@@ -93,41 +92,40 @@ export default {
     Customer: { type: Object, required: true },
   },
   data() {
-
     const customerFormSchema = yup.object().shape({
-        hotenKH: yup
-          .string()
-          .required("Tên phải có giá trị.")
-          .min(2, "Tên phải ít nhất 2 ký tự.")
-          .max(50, "Tên có nhiều nhất 50 ký tự."),
-        password: yup.string().min(6, "Password ít nhất 6 ký tự."),
-        diachi: yup.string().max(100, "Địa chỉ tối đa 100 ký tự."),
-        email: yup
+      hotenKH: yup
+        .string()
+        .required("Tên phải có giá trị.")
+        .min(2, "Tên phải ít nhất 2 ký tự.")
+        .max(50, "Tên có nhiều nhất 50 ký tự."),
+      password: yup.string().min(6, "Password ít nhất 6 ký tự."),
+      diachi: yup.string().max(100, "Địa chỉ tối đa 100 ký tự."),
+      email: yup
         .string()
         .email("E-mail không đúng.")
         .max(50, "E-mail tối đa 50 ký tự."),
-        sodt: yup
-          .string()
-          .matches(
-            /((09|03|07|08|05)+([0-9]{8})\b)/g,
-            "Số điện thoại không hợp lệ."
-          )
-      })
-      return {
+      sodt: yup
+        .string()
+        .matches(
+          /((09|03|07|08|05)+([0-9]{8})\b)/g,
+          "Số điện thoại không hợp lệ."
+        ),
+    });
+    return {
       customerLocal: this.Customer,
       customerFormSchema,
-    }
+    };
   },
 
   methods: {
     // Validate trước khi gửi dữ liệu
-    submitCustomer () {
+    submitCustomer() {
       try {
         // event.preventDefault();
         this.$emit("submit:Customer", this.customerLocal);
         // Call API nếu dữ liệu hợp lệ
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     goToCustomer() {

@@ -20,7 +20,7 @@
             type="submit"
             @click="goToAddStaff"
           >
-          <i class="fa-solid fa-plus"></i>
+          <i class="fa-solid fa-plus"></i> Thêm
           </button>
         </div>
 
@@ -39,7 +39,7 @@
 import Menu from "@/components/Menu.vue";
 import StaffList from "@/components/StaffList.vue";
 import InputSearch from "@/components/InputSearch.vue";
-import StaffService from "@/services/staff.service";
+import CustomerService from "@/services/contact.service";
 
 export default {
   components: {
@@ -67,7 +67,7 @@ export default {
     contactStrings() {
       return this.Staff.map((staff) => {
         const { hotenNV, diachi, sodt, chucvu } = staff;
-        return [hotenNV, diachi, sodt, chucvu].join("");
+        return [hotenNV, diachi, sodt, chucvu].join("").toLowerCase();
       });
     },
 
@@ -86,7 +86,7 @@ export default {
   methods: {
     async retrieveStaffs() {
       try {
-        this.Staff = await StaffService.getAllNV();
+        this.Staff = await CustomerService.getAllNV();
       } catch (error) {
         console.log(error);
       }

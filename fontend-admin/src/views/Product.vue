@@ -20,13 +20,13 @@
             type="submit"
             @click="goToAddProduct"
           >
-          <i class="fa-solid fa-plus"></i>
+          <i class="fa-solid fa-plus"></i> Thêm
           </button>
         </div>
 
         <ProductList
           v-if="filteredContactsCount > 0"
-          :Customer="filteredContacts"
+          :Product="filteredContacts"
           v-model:activeIndex="activeIndex"
         />
         <p v-else class="text-center">Không có sản phẩm nào!</p>
@@ -50,7 +50,7 @@ export default {
   // Đoạn mã xử lý đầy đủ sẽ trình bày bên dưới
   data() {
     return {
-      Customer: [],
+      Product: [],
       activeIndex: -1,
       searchText: "",
     };
@@ -65,16 +65,16 @@ export default {
   computed: {
     // Chuyển các đối tượng contact thành chuỗi để tiện cho tìm kiếm.
     contactStrings() {
-      return this.Customer.map((customer) => {
-        const { hotenKH, diachi, sodt } = customer;
-        return [hotenKH, diachi, sodt].join("");
+      return this.Product.map((product) => {
+        const { TenHH } = product;
+        return [TenHH].join("").toLowerCase();
       });
     },
 
     // Trả về các contact có chứa thông tin cần tìm kiếm.
     filteredContacts() {
-      if (!this.searchText) return this.Customer;
-      return this.Customer.filter((_customer, index) =>
+      if (!this.searchText) return this.Product;
+      return this.Product.filter((_product, index) =>
         this.contactStrings[index].includes(this.searchText)
       );
     },
@@ -91,8 +91,11 @@ export default {
   methods: {
     async retrieveContacts() {
       try {
-        this.Customer = await CustomerService.getAllKH();
+        alert("1")
+        this.Product = await CustomerService.getAllSP();
+        alert("2")
       } catch (error) {
+        alert("3")
         console.log(error);
       }
     },

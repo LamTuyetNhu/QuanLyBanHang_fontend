@@ -8,9 +8,11 @@
 
     <div class="col col-8">
       <div class="home-product">
-        <h2 class="allcustomer-list">Cập nhật Nhân Viên</h2>
+        <h2 class="allcustomer-list">Cập nhật nhân viên</h2>
       <StaffFormUpdate
-      
+        :Staff="Staff"
+        v-if="Staff"
+        @submit:Staff="updateStaff"
       />
       </div>
     </div>
@@ -22,7 +24,7 @@
 <script>
 import Menu from "@/components/Menu.vue";
 import StaffFormUpdate from "@/components/StaffFormUpdate.vue";
-// import ContactService from "@/services/contact.service";
+import ContactService from "@/services/contact.service";
 export default {
   components: {
     Menu,
@@ -31,41 +33,43 @@ export default {
   props: {
     id: { type: String, required: true },
   },
-  // data() {
-  //   return {
-  //     khachhang: null,
-  //     message: "",
-  //   };
-  // },
-  // methods: {
-  //   async getCustomer(id) {
-  //     try {
-  //       this.khachhang = await ContactService.get(id);
-  //     } catch (error) {
-  //       console.log(error);
-  //       // Chuyển sang trang NotFound đồng thời giữ cho URL không đổi
-  //       this.$router.push({
-  //         name: "notfound",
-  //         params: {
-  //           pathMatch: this.$route.path.split("/").slice(1),
-  //         },
-  //         query: this.$route.query,
-  //         hash: this.$route.hash,
-  //       });
-  //     }
-  //   },
-  //   async updateCustomer(data) {
-  //     try {
-  //       await ContactService.update(this.khachhang._id, data);
-  //       this.message = "Khách hàng đã được cập nhật thành công.";
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   },
-  // },
-  // created() {
-  //   this.getCustomer(this.id);
-  //   this.message = "";
-  // },
+  data() {
+    return {
+      Staff: null,
+      message: "",
+    };
+  },
+  methods: {
+    async getStaff(id) {
+      try {
+        this.Staff = await ContactService.getNV(id);
+      } catch (error) {
+        console.log(error);
+        // Chuyển sang trang NotFound đồng thời giữ cho URL không đổi
+        this.$router.push({
+          name: "notfound",
+          params: {
+            pathMatch: this.$route.path.split("/").slice(1),
+          },
+          query: this.$route.query,
+          hash: this.$route.hash,
+        });
+      }
+    },
+    async updateStaff(data) {
+      try {
+        this.$router.push({ name: "Staff" });
+        alert("Cập nhật thành công!")
+        await ContactService.updateNV(data);
+      } catch (error) {
+        this.message = "Khách hàng cập nhật thất bại.";
+        console.log(error);
+      }
+    },
+  },
+  created() {
+    this.getStaff(this.id);
+    this.message = "";
+  },
 };
 </script>

@@ -2,7 +2,7 @@
   <header>
     <div class="logo" @click="goToCustomer">
       <img class="logo-img" src="/logo.png" />
-      <div class="logo-content">Quản lý bán hàng</div>
+      <div class="logo-content">Tuyết Như</div>
     </div>
 
     <div class="flex">

@@ -1,16 +1,14 @@
 <template>
-  <Form id="customerForm" class="update width-50 w3-container">
+  <Form id="customerForm" class="update width-50 w3-container" @submit="submitProduct"
+    :validation-schema="productFormSchema">
     <!-- Hiển thị hình ảnh đã chọn -->
-    <div v-if="selectedImages.length > 0">
+    <!-- <div>
       <label class="update-label">Hình ảnh đã chọn:</label>
       <div class="selected-images-container">
         <div
-          v-for="(image, index) in selectedImages"
-          :key="index"
           class="selected-image"
         >
           <img
-            :src="image.dataUrl"
             alt="Selected Image"
             class="selected-image-preview"
           />
@@ -22,39 +20,32 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Thêm thuộc tính @change để gọi hàm onFileChange khi chọn ảnh -->
-    <p class="form-label">
-      <label class="update-label">Tên sản phẩm</label>
-      <!-- <Field id="TenHH" class="w3-input" type="text" name="TenHH" required /> -->
+    <!-- <p class="form-label">
+      <label class="update-label">Ảnh sản phẩm</label>
 
       <Field
-        id="ten_anh"
+        id="images"
         class="w3-input"
         type="file"
-        name="ten_anh"
-        @change="onFileChange"
+        name="images"
+        ref="fileInput"
         multiple
         required
       />
-    </p>
-
-    <!-- <p class="form-label">
-      <label class="update-label">Ảnh sản phẩm</label>
-      <Field id="ten_anh" class="w3-input" type="file" name="ten_anh" required />
-    </p>
-    <ErrorMessage name="ten_anh" class="error-feedback" /> -->
+    </p> -->
 
     <p class="form-label">
       <label class="update-label">Tên sản phẩm</label>
-      <Field id="TenHH" class="w3-input" type="text" name="TenHH" required />
+      <Field id="TenHH" class="w3-input" type="text" name="TenHH" v-model="productLocal.TenHH" required />
     </p>
     <ErrorMessage name="TenHH" class="error-feedback" />
 
     <p class="form-label">
       <label class="update-label">Giá</label>
-      <Field id="Gia" class="w3-input" type="number" name="Gia" required />
+      <Field id="Gia" class="w3-input" type="number" name="Gia" v-model="productLocal.Gia" required />
     </p>
     <ErrorMessage name="Gia" class="error-feedback" />
 
@@ -65,6 +56,7 @@
         class="w3-input"
         type="number"
         name="SoLuongHang"
+        v-model="productLocal.SoLuongHang"
         required
       />
     </p>
@@ -72,13 +64,13 @@
 
     <p class="form-label">
       <label class="update-label">Mô tả</label>
-      <Field id="MoTaHH" class="w3-input" type="text" name="MoTaHH" required />
+      <Field id="MoTaHH" class="w3-input" type="text" name="MoTaHH" v-model="productLocal.MoTaHH" required />
     </p>
     <ErrorMessage name="MoTaHH" class="error-feedback" />
 
     <p class="form-label">
       <label class="update-label">Ghi chú</label>
-      <Field id="GhiChu" class="w3-input" type="text" name="GhiChu" required />
+      <Field id="GhiChu" class="w3-input" type="text" name="GhiChu" v-model="productLocal.GhiChu" required />
     </p>
     <ErrorMessage name="GhiChu" class="error-feedback" />
 
@@ -102,93 +94,84 @@ export default {
     Form,
     Field,
     ErrorMessage,
-    Multiselect, // Thêm Multiselect vào components
+    Multiselect,
+  },
+  emits: ["submit:Product"],
+  props: {
+    Product: { type: Object, required: true },
   },
   data() {
+    const productFormSchema = yup.object().shape({
+      // images: yup.mixed().required("Ảnh phải có giá trị."),
+      TenHH: yup.string().max(50, "Tên tối đa 50 ký tự."),
+      Gia: yup
+        .number()
+        .typeError("Giá phải là một số.")
+        .positive("Giá phải lớn hơn 0."),
+      SoLuongHang: yup
+        .number()
+        .typeError("Số lượng hàng phải là một số.")
+        .positive("Số lượng hàng phải lớn hơn 0."),
+      MoTaHH: yup.string().min(1, "Vui lòng nhập mô tả"),
+      GhiChu: yup.string().min(1, "Vui lòng nhập ghi chú"),
+    });
+
     return {
-      selectedImages: [], // Danh sách các hình ảnh đã chọn
+      // Chúng ta sẽ không muốn hiệu chỉnh props, nên tạo biến cục bộ
+      // contactLocal để liên kết với các input trên form
+      productLocal: this.Product,
+      productFormSchema,
+      // selectedImages: [], // Danh sách các hình ảnh đã chọn
     };
   },
   methods: {
-    onFileChange(event) {
-      const files = event.target.files;
+    async submitProduct() {
+      try {
+        // const formData = new FormData();
+        // formData.append("images", this.$refs.fileInput.files[0]);
+        // formData.append("TenHH", this.productLocal.TenHH);
+        // formData.append("Gia", this.productLocal.Gia);
+        // formData.append("SoLuongHang", this.productLocal.SoLuongHang);
+        // formData.append("MoTaHH", this.productLocal.MoTaHH);
+        // formData.append("GhiChu", this.productLocal.GhiChu);
 
-      // Lặp qua danh sách các tập tin đã chọn và thêm vào mảng selectedImages
-      for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-          // Thêm đối tượng hình ảnh vào mảng selectedImages
-          this.selectedImages.push({
-            file: files[i],
-            dataUrl: e.target.result,
-          });
-        };
-
-        // Đọc tập tin như là URL dữ liệu
-        reader.readAsDataURL(files[i]);
+        this.$emit("submit:Product", this.productLocal);
+        // await ContactService.createSP(formData);
+        // this.$router.push({ name: "Product" });
+        alert("Thêm thành công!");
+      } catch (error) {
+        console.error(error);
+        alert("Thêm không thành công!");
       }
     },
+
+    // onFileChange(event) {
+    //   const files = event.target.files;
+
+    //   // Lặp qua danh sách các tập tin đã chọn và thêm vào mảng selectedImages
+    //   for (let i = 0; i < files.length; i++) {
+    //     const reader = new FileReader();
+
+    //     reader.onload = (e) => {
+    //       // Thêm đối tượng hình ảnh vào mảng selectedImages
+    //       this.selectedImages.push({
+    //         file: files[i],
+    //         dataUrl: e.target.result,
+    //       });
+    //     };
+
+    //     // Đọc tập tin như là URL dữ liệu
+    //     reader.readAsDataURL(files[i]);
+    //   }
+    // },
+
     removeImage(index) {
       this.selectedImages.splice(index, 1);
     },
-  },
-};
-</script>
-<!-- 
-<script>
-import * as yup from "yup";
-import { Form, Field, ErrorMessage } from "vee-validate";
-export default {
-  components: {
-    Form,
-    Field,
-    ErrorMessage,
-  },
-  // emits: ["submit:customer", "delete:customer"],
-  // props: {
-  //   khachhang: { type: Object, required: true },
-  // },
-  // data() {
-  //   const customerFormSchema = yup.object().shape({
-  //     username: yup
-  //       .string()
-  //       .required("Tên phải có giá trị.")
-  //       .min(2, "Tên phải ít nhất 2 ký tự.")
-  //       .max(50, "Tên có nhiều nhất 50 ký tự."),
-  // email: yup
-  //   .string()
-  //   .email("E-mail không đúng.")
-  //   .max(50, "E-mail tối đa 50 ký tự."),
-  // address: yup.string().max(100, "Địa chỉ tối đa 100 ký tự."),
-  //     address: yup.string().max(100, "Địa chỉ tối đa 100 ký tự."),
-  //     password: yup
-  //       .string()
-  //       .min(6, "Mật khẩu phải có 6 ký tự."),
-  //     phone: yup
-  //       .string()
-  //       .matches(
-  //         /((09|03|07|08|05)+([0-9]{8})\b)/g,
-  //         "Số điện thoại không hợp lệ."
-  //       ),
-  //   });
-  //   return {
-  //     // Chúng ta sẽ không muốn hiệu chỉnh props, nên tạo biến cục bộ
-  //     // contactLocal để liên kết với các input trên form
-  //     customerLocal: this.khachhang,
-  //     customerFormSchema,
-  //   };
-  // },
-  methods: {
-    // submitCustomer() {
-    //   this.$emit("submit:customer", this.customerLocal);
-    // },
-    // deleteCustomer() {
-    //   this.$emit("delete:customer", this.customerLocal.id);
-    // },
+
     goToProduct() {
       this.$router.push({ name: "Product" });
     },
   },
 };
-</script> -->
+</script>

@@ -43,10 +43,10 @@ export default {
       try {
         await ContactService.createKH(data);
         this.$router.push({ name: "Customer" });
-        alert("Cập nhật thành công!")
+        alert("Thêm thành công!")
       } catch (error) {
         console.log(error);
-        alert("Cập nhật không thành công!")
+        alert("Thêm không thành công!")
 
       }
     }

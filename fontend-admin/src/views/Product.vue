@@ -91,11 +91,8 @@ export default {
   methods: {
     async retrieveContacts() {
       try {
-        alert("1")
         this.Product = await CustomerService.getAllSP();
-        alert("2")
       } catch (error) {
-        alert("3")
         console.log(error);
       }
     },

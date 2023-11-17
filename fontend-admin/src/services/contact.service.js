@@ -44,7 +44,8 @@ class ContactService {
         return (await this.api.get("/get_all_san_pham")).data.ds;
     }
     async createSP(data){
-        return (await this.api.post("/tao_san_pham", data)).data;
+        alert(data)
+        return (await this.api.post("/uploadfile", data)).data;
     }
     async getSP(id){
         return (await this.api.get(`/thong_tin_mot_nhan_vien/${id}`)).data;

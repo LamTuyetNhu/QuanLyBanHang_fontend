@@ -54,7 +54,7 @@ export default {
         <tbody id="myTable">
           <tr v-for="(product, index) in Product">
             <td class="allcus-title table-number">{{ index + 1 }}</td>
-            <td class="allcus-title">11</td>
+            <td class="allcus-title"><img class="img_product" :src="'http://localhost:3000/images/' + product.ten_anh" /></td>
             <td class="allcus-title">{{ product.TenHH }}</td>
             <td class="allcus-title">{{ product.Gia }}</td>
             <td class="allcus-title">{{ product.SoLuongHang }}</td>

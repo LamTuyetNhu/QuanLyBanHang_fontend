@@ -309,6 +309,11 @@ input {
   /* filter: grayscale(40%) blur(2px); */
 }
 
+.img_product {
+  max-width: 100px;
+  max-height: 150px;
+}
+
 .cart-slide {
   font-size: 5.5em;
   padding: 24px;

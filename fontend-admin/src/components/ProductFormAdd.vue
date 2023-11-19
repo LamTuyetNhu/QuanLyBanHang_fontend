@@ -2,40 +2,24 @@
   <Form id="customerForm" class="update width-50 w3-container" @submit="submitProduct"
     :validation-schema="productFormSchema">
     <!-- Hiển thị hình ảnh đã chọn -->
-    <!-- <div>
+    <div>
       <label class="update-label">Hình ảnh đã chọn:</label>
       <div class="selected-images-container">
-        <div
-          class="selected-image"
-        >
-          <img
-            alt="Selected Image"
-            class="selected-image-preview"
-          />
-          <button
-            @click.prevent="removeImage(index)"
-            class="remove-image-button"
-          >
+        <div class="selected-image">
+          <img alt="Selected Image" class="selected-image-preview" />
+          <button @click.prevent="removeImage(index)" class="remove-image-button">
             Xóa
           </button>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <!-- Thêm thuộc tính @change để gọi hàm onFileChange khi chọn ảnh -->
-    <!-- <p class="form-label">
+    <p class="form-label">
       <label class="update-label">Ảnh sản phẩm</label>
 
-      <Field
-        id="images"
-        class="w3-input"
-        type="file"
-        name="images"
-        ref="fileInput"
-        multiple
-        required
-      />
-    </p> -->
+      <Field id="images" class="w3-input" type="file" name="images" multiple required @change="onFileChange" />
+    </p>
 
     <p class="form-label">
       <label class="update-label">Tên sản phẩm</label>
@@ -51,14 +35,8 @@
 
     <p class="form-label">
       <label class="update-label">Số lượng</label>
-      <Field
-        id="SoLuongHang"
-        class="w3-input"
-        type="number"
-        name="SoLuongHang"
-        v-model="productLocal.SoLuongHang"
-        required
-      />
+      <Field id="SoLuongHang" class="w3-input" type="number" name="SoLuongHang" v-model="productLocal.SoLuongHang"
+        required />
     </p>
     <ErrorMessage name="SoLuongHang" class="error-feedback" />
 
@@ -83,12 +61,13 @@
   </Form>
 </template>
 
-<script>
+<script >
 import * as yup from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
 // Import thư viện vue-multiselect
 import Multiselect from "vue-multiselect";
-
+import ContactService from '../services/contact.service'
+import axios from 'axios'
 export default {
   components: {
     Form,
@@ -121,22 +100,34 @@ export default {
       // contactLocal để liên kết với các input trên form
       productLocal: this.Product,
       productFormSchema,
-      // selectedImages: [], // Danh sách các hình ảnh đã chọn
+      selectedImages: [], // Danh sách các hình ảnh đã chọn
     };
   },
   methods: {
     async submitProduct() {
       try {
-        // const formData = new FormData();
-        // formData.append("images", this.$refs.fileInput.files[0]);
-        // formData.append("TenHH", this.productLocal.TenHH);
-        // formData.append("Gia", this.productLocal.Gia);
-        // formData.append("SoLuongHang", this.productLocal.SoLuongHang);
-        // formData.append("MoTaHH", this.productLocal.MoTaHH);
-        // formData.append("GhiChu", this.productLocal.GhiChu);
+        const formData = new FormData();
+        formData.append("TenHH", this.productLocal.TenHH);
+        formData.append("Gia", this.productLocal.Gia);
+        formData.append("SoLuongHang", this.productLocal.SoLuongHang);
+        formData.append("MoTaHH", this.productLocal.MoTaHH);
+        formData.append("GhiChu", this.productLocal.GhiChu);
+        [...this.selectedImages].forEach((item) => {
+          console.log(item.name)
+          formData.append('images', item)
 
-        this.$emit("submit:Product", this.productLocal);
+        })
+        await axios.post('/api/uploadfile', formData)
+
         // await ContactService.createSP(formData);
+        // console.log(this.selectedImages)
+        this.$emit("submit:Product", this.productLocal);
+
+
+
+
+
+
         // this.$router.push({ name: "Product" });
         alert("Thêm thành công!");
       } catch (error) {
@@ -144,6 +135,17 @@ export default {
         alert("Thêm không thành công!");
       }
     },
+    onFileChange(e) {
+      const files = e.target.files
+      console.log(files)
+      if (files) {
+        [...files].forEach((item) => {
+
+          this.selectedImages.push(item)
+        })
+      }
+    },
+
 
     // onFileChange(event) {
     //   const files = event.target.files;
@@ -164,6 +166,9 @@ export default {
     //     reader.readAsDataURL(files[i]);
     //   }
     // },
+
+
+
 
     removeImage(index) {
       this.selectedImages.splice(index, 1);

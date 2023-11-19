@@ -5,55 +5,55 @@ class ContactService {
         this.api = createApiClient(baseUrl);
     }
     /* Khách hàng */
-    async getAllKH(){
+    async getAllKH() {
         return (await this.api.get("/get_all_khach_hang")).data.ds;
     }
-    async createKH(data){
+    async createKH(data) {
         return (await this.api.post("/dang_ky_khach_hang", data)).data;
     }
-    async getKH(_id){
+    async getKH(_id) {
         return (await this.api.get(`/thong_tin_mot_khach_hang/${_id}`)).data;
     }
-    async updateKH(data){
-            return (await this.api.put(`/thay_doi_thong_tin_khach_hang`, data)).data;
+    async updateKH(data) {
+        return (await this.api.put(`/thay_doi_thong_tin_khach_hang`, data)).data;
     }
-    async deleteKH(_id){
+    async deleteKH(_id) {
         return (await this.api.delete(`/xoa_khach_hang/${_id}`)).data;
     }
 
 
     /* Nhân viên */
-    async getAllNV(){
+    async getAllNV() {
         return (await this.api.get("/get_all_nhan_vien")).data.ds;
     }
-    async createNV(data){
+    async createNV(data) {
         return (await this.api.post("/dang_ky_nhan_vien", data)).data;
     }
-    async getNV(id){
+    async getNV(id) {
         return (await this.api.get(`/thong_tin_mot_nhan_vien/${id}`)).data;
     }
-    async updateNV(data){
-            return (await this.api.put(`/thay_doi_thong_tin_nhan_vien`, data)).data;
+    async updateNV(data) {
+        return (await this.api.put(`/thay_doi_thong_tin_nhan_vien`, data)).data;
     }
-    async deleteNV(_id){
+    async deleteNV(_id) {
         return (await this.api.delete(`/xoa_nhan_vien/${_id}`)).data;
     }
 
     /* Sản phẩm */
-    async getAllSP(){
+    async getAllSP() {
         return (await this.api.get("/get_all_san_pham")).data.ds;
     }
-    async createSP(data){
-        alert(data)
-        return (await this.api.post("/uploadfile", data)).data;
+    async createSP(data) {
+        console.log(data)
+        return (await this.api.post("/uploadfile", data));
     }
-    async getSP(id){
+    async getSP(id) {
         return (await this.api.get(`/thong_tin_mot_nhan_vien/${id}`)).data;
     }
-    async updateSP(data){
-            return (await this.api.put(`/thay_doi_thong_tin_nhan_vien`, data)).data;
+    async updateSP(data) {
+        return (await this.api.put(`/thay_doi_thong_tin_nhan_vien`, data)).data;
     }
-    async deleteSP(_id){
+    async deleteSP(_id) {
         return (await this.api.delete(`/xoa_nhan_vien/${_id}`)).data;
     }
 }

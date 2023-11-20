@@ -11,7 +11,6 @@
         <h2 class="allcustomer-list app__content">Thêm Sản Phẩm</h2>
           <ProductFormAdd 
           :Product="Product"
-          @submit:Product="postProduct"
           />
       </div>
     </div>
@@ -23,7 +22,6 @@
 <script>
 import Menu from "@/components/Menu.vue";
   import ProductFormAdd from "@/components/ProductFormAdd.vue";
-  import ContactService from "@/services/contact.service";
   export default{
       components: {
         Menu,
@@ -38,17 +36,6 @@ import Menu from "@/components/Menu.vue";
       },
 
       methods:{
-          async postProduct(data) {
-              try{
-                alert("1")
-                  await ContactService.createSP(data);
-                alert("3")
-                  this.message = "Thêm Thành Công";
-              }catch(error){
-                alert("2")
-                  console.log(error);
-              }
-          }
       },
       created() {
           this.message = "";

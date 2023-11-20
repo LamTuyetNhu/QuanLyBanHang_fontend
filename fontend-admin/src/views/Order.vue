@@ -14,19 +14,19 @@
             <InputSearch v-model="searchText" />
           </div>
 
-          <button
+          <!-- <button
             id="createBtn"
             class="allcus-button"
             type="submit"
             @click="goToAddOrder"
           >
-          <i class="fa-solid fa-plus"></i>
-          </button>
+          <i class="fa-solid fa-plus"></i> Thêm
+          </button> -->
         </div>
 
         <OrderList
           v-if="filteredContactsCount > 0"
-          :Customer="filteredContacts"
+          :Order="filteredContacts"
           v-model:activeIndex="activeIndex"
         />
         <p v-else class="text-center">Không có đơn hàng nào!</p>
@@ -50,7 +50,7 @@ export default {
   // Đoạn mã xử lý đầy đủ sẽ trình bày bên dưới
   data() {
     return {
-      Customer: [],
+      Order: [],
       activeIndex: -1,
       searchText: "",
     };
@@ -65,16 +65,16 @@ export default {
   computed: {
     // Chuyển các đối tượng contact thành chuỗi để tiện cho tìm kiếm.
     contactStrings() {
-      return this.Customer.map((customer) => {
-        const { hotenKH, diachi, sodt } = customer;
-        return [hotenKH, diachi, sodt].join("");
+      return this.Order.map((order) => {
+        const { thoi_gian_dat, trang_thai } = order;
+        return [thoi_gian_dat, trang_thai].join("");
       });
     },
 
     // Trả về các contact có chứa thông tin cần tìm kiếm.
     filteredContacts() {
-      if (!this.searchText) return this.Customer;
-      return this.Customer.filter((_customer, index) =>
+      if (!this.searchText) return this.Order;
+      return this.Order.filter((_order, index) =>
         this.contactStrings[index].includes(this.searchText)
       );
     },
@@ -91,7 +91,8 @@ export default {
   methods: {
     async retrieveContacts() {
       try {
-        this.Customer = await CustomerService.getAllKH();
+        this.Order = await CustomerService.getAllOrder();
+
       } catch (error) {
         console.log(error);
       }
@@ -105,6 +106,7 @@ export default {
     goToAddOrder() {
       this.$router.push({ name: "order.addOrder" });
     },
+    
   },
   mounted() {
     this.refreshList();

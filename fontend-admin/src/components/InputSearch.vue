@@ -26,7 +26,7 @@ export default {
             @keyup.enter="submit"
         />
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" @click="submit">Tìm kiếm</button>
+            <button id="find" class="btn btn-outline-secondary" type="button" @click="submit">Tìm kiếm</button>
         </div>
     </div>
 </template>

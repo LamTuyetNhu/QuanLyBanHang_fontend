@@ -37,8 +37,8 @@ export default {
     async postStaff(data) {
       try {
         await ContactService.createNV(data);
-        this.$router.push({ name: "Staff" });
         alert("Cập nhật thành công!");
+        this.$router.push({ name: "Staff" });
       } catch (error) {
         console.log(error);
         alert("Cập nhật không thành công!")

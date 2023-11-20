@@ -3,10 +3,16 @@ import Customer from "@/views/Customer.vue";
 import Product from "@/views/Product.vue";
 import Order from "@/views/Order.vue";
 import Staff from "@/views/Staff.vue";
+import Login from "@/views/Login.vue";
 
 const routes = [
     {
         path: "/",
+        name: "dangnhap",
+        component: Login,
+    },
+    {
+        path: "/customer",
         name: "Customer",
         component: Customer,
     },

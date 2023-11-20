@@ -1,59 +1,81 @@
 <template>
-  <Form id="customerForm" class="update width-50 w3-container" @submit="submitCustomer" :validation-schema="customerFormSchema">
+  <Form
+    id="customerForm"
+    class="update width-50 w3-container"
+    @submit="submitProduct"
+    :validation-schema="customerFormSchema"
+  >
+    <p class="form-label">
+      <label class="update-label">Tên sản phẩm</label>
+      <Field
+        id="TenHH"
+        class="w3-input"
+        type="text"
+        name="TenHH"
+        v-model="customerLocal.TenHH"
+        required
+      />
+    </p>
+    <ErrorMessage name="TenHH" class="error-feedback" />
 
-            <p class="form-label">
-              <label class="update-label">Tên sản phẩm</label>
-              <Field
-                id="username"
-                class="w3-input"
-                type="text"
-                name="hoTen"
-                required
-              />
-            </p>
-            <ErrorMessage name="hoTen" class="error-feedback" />
+    <p class="form-label">
+      <label class="update-label">Giá</label>
+      <Field
+        id="Gia"
+        class="w3-input"
+        type="text"
+        name="Gia"
+        v-model="customerLocal.Gia"
+        required
+      />
+    </p>
+    <ErrorMessage name="Gia" class="error-feedback" />
 
-            <p class="form-label">
-              <label class="update-label">Password</label>
-              <Field
-                id="password"
-                class="w3-input"
-                type="password"
-                name="password"
-                required
-              />
-            </p>
-            <ErrorMessage name="name" class="error-feedback" />
+    <p class="form-label">
+      <label class="update-label">Số lượng</label>
+      <Field
+        id="SoLuongHang"
+        class="w3-input"
+        type="text"
+        name="SoLuongHang"
+        v-model="customerLocal.SoLuongHang"
+        required
+      />
+    </p>
+    <ErrorMessage name="SoLuongHang" class="error-feedback" />
 
-            <p class="form-label">
-              <label class="update-label">Địa chỉ</label>
-              <Field
-                id="address"
-                class="w3-input"
-                type="text"
-                name="diachi"
-                required
-              />
-            </p>
-            <ErrorMessage name="name" class="error-feedback" />
+    <p class="form-label">
+      <label class="update-label">Mô tả</label>
+      <Field
+        id="MoTaHH"
+        class="w3-input"
+        type="text"
+        name="MoTaHH"
+        v-model="customerLocal.MoTaHH"
+        required
+      />
+    </p>
+    <ErrorMessage name="MoTaHH" class="error-feedback" />
 
+    <p class="form-label">
+      <label class="update-label">Ghi chú</label>
+      <Field
+        id="GhiChu"
+        class="w3-input"
+        type="text"
+        name="GhiChu"
+        v-model="customerLocal.GhiChu"
+        required
+      />
+    </p>
+    <ErrorMessage name="GhiChu" class="error-feedback" />
 
-            <p class="form-label">
-              <label class="update-label">Số điện thoại</label>
-              <Field
-                id="phonenumber"
-                class="w3-input"
-                type="text"
-                name="sodt"
-                required
-              />
-            </p>
-            <ErrorMessage name="name" class="error-feedback" />
-
-            <div class="allcus-form">
-                <button class="allcus-button" type="submit">Thêm</button>
-                <button class="allcus-button" type="submit" @click="goToProduct">Hủy</button>
-            </div>
+    <div class="allcus-form">
+      <button class="allcus-button" type="submit">Cập nhật</button>
+      <button class="allcus-button" type="submit" @click="goToProduct">
+        Hủy
+      </button>
+    </div>
   </Form>
 </template>
 <script>
@@ -65,42 +87,42 @@ export default {
     Field,
     ErrorMessage,
   },
-  emits: ["submit:customer"],
+  emits: ["submit:Product"],
   props: {
-    Customer: { type: Object, required: true },
+    Product: { type: Object, required: true },
   },
   data() {
     const customerFormSchema = yup.object().shape({
-      hotenKH: yup
+      TenHH: yup
         .string()
         .required("Tên phải có giá trị.")
         .min(2, "Tên phải ít nhất 2 ký tự.")
         .max(50, "Tên có nhiều nhất 50 ký tự."),
-      diachi: yup.string().max(100, "Địa chỉ tối đa 100 ký tự."),
-      password: yup
-        .string()
-        .min(6, "Mật khẩu phải có 6 ký tự."),
-      sodt: yup
-        .string()
-        .matches(
-          /((09|03|07|08|05)+([0-9]{8})\b)/g,
-          "Số điện thoại không hợp lệ."
-        ),
+      SoLuongHang: yup
+        .number()
+        .integer("Số lượng phải là số nguyên.")
+        .min(1, "Số lượng phải lớn hơn hoặc bằng 1."),
+      Gia: yup
+        .number()
+        .min(0, "Giá phải lớn hơn hoặc bằng 0.")
+        .required("Giá phải có giá trị."),
+      MoTaHH: yup.string().max(2000, "Mô tả không được vượt quá 255 ký tự."),
+      GhiChu: yup.string().max(2000, "Ghi chú không được vượt quá 255 ký tự."),
     });
     return {
       // Chúng ta sẽ không muốn hiệu chỉnh props, nên tạo biến cục bộ
       // contactLocal để liên kết với các input trên form
-      customerLocal: this.Customer,
+      customerLocal: this.Product,
       customerFormSchema,
     };
   },
   methods: {
-    submitCustomer() {
-      this.$emit("submit:customer", this.customerLocal);
+    submitProduct() {
+      this.$emit("submit:Product", this.customerLocal);
     },
     goToProduct() {
       this.$router.push({ name: "Product" });
-    }
+    },
   },
 };
 </script>

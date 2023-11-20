@@ -6,9 +6,9 @@
     </div>
 
     <div class="flex">
-      <div class="username">
+      <!-- <div class="username">
         {{ user.name }}
-      </div>
+      </div> -->
       <div class="logout" @click="logout">
         <i class="fa fa-arrow-right-from-bracket"></i>
       </div>

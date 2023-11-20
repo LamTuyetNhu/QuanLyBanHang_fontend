@@ -60,10 +60,11 @@ export default {
 
     async updateCustomer(data) {
       try {
-        this.$router.push({ name: "Customer" });
         alert("Cập nhật thành công!")
+        this.$router.push({ name: "Customer" });
         await ContactService.updateKH(data);
       } catch (error) {
+        alert("Cập nhật thất bại!")
         this.message = "Khách hàng cập nhật thất bại.";
         console.log(error);
       }

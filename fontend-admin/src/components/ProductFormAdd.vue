@@ -2,7 +2,7 @@
   <Form id="customerForm" class="update width-50 w3-container" @submit="submitProduct"
     :validation-schema="productFormSchema">
     <!-- Hiển thị hình ảnh đã chọn -->
-    <div>
+    <!-- <div>
       <label class="update-label">Hình ảnh đã chọn:</label>
       <div class="selected-images-container">
         <div class="selected-image">
@@ -12,7 +12,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Thêm thuộc tính @change để gọi hàm onFileChange khi chọn ảnh -->
     <p class="form-label">

@@ -5,39 +5,42 @@
         <thead>
           <tr>
             <th>STT</th>
-            <th>Tên</th>
-            <th>Địa chỉ</th>
-            <th>Điện thoại</th>
-            <th>Lựa chọn</th>
+            <th>Thời gian đặt</th>
+            <th>Trạng thái</th>
+            <th>Chi tiết</th>
           </tr>
         </thead>
         <tbody id="myTable">
-          <tr v-for="(customer, index) in Customer">
+          <tr v-for="(order, index) in Order">
             <td class="allcus-title table-number">{{ index + 1 }}</td>
-            <td class="allcus-title">{{ customer.hotenKH }}</td>
-            <td class="allcus-title">{{ customer.diachi }}</td>
-            <td class="allcus-title">{{ customer.sodt }}</td>
+            <td class="allcus-title">
+              {{ formatDateTime(order.thoi_gian_dat) }}
+            </td>
+            <td class="allcus-title">{{ order.trang_thai }}</td>
+
             <td class="allcus-title">
               <div class="allcus-form">
                 <router-link
                   :to="{
                     name: 'order.detailOrder',
-                    params: { id: customer._id },
+                    params: { id: order._id },
                   }"
                 >
-                  <button class="allcus-button" type="submit"><i class="fa-solid fa-eye"></i></button>
+                  <button class="allcus-button" type="submit">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
                 </router-link>
 
-                <button
+                <!-- <button
                   class="allcus-button"
                   data-toggle="modal"
                   data-target="#myModal1"
                   type="submit"
-                  v-if="customer._id"
-                  @click="deleteCustomer(customer._id)"
+                  v-if="order._id"
+                  @click="deleteCustomer(order._id)"
                 >
-                <i class="fa-solid fa-trash"></i>
-                </button>
+                  <i class="fa-solid fa-trash"></i>
+                </button> -->
               </div>
             </td>
           </tr>
@@ -48,35 +51,24 @@
 </template>
 
 <script>
-import ContactService from "@/services/contact.service";
+
+import moment from "moment";
 export default {
   // emits: ["delete:khachhang"],
   props: {
-    Customer: { type: Array, default: [] },
+    Order: { type: Array, default: [] },
   },
   methods: {
-    async retrieveContacts() {
-      try {
-        this.Customer = await ContactService.getAllKH();
-        // console.log("sjdfhjkf")
-      } catch (error) {
-        console.log(error);
-      }
-    },
     refreshList() {
       this.retrieveContacts();
       this.activeIndex = -1;
     },
-    async deleteCustomer(customerId) {
-      if (confirm("Bạn muốn xóa khách hàng này?")) {
-        try {
-          await ContactService.deleteKH(customerId);
-          this.refreshList();
-          // this.$router.go(0);
-        } catch (error) {
-          console.log(error);
-        }
-      }
+    formatDateTime(dateTime) {
+      return moment(dateTime).format("DD/MM/YYYY");
+    },
+    formatCurrency(amount) {
+      // Sử dụng Intl.NumberFormat để định dạng số với dấu phẩy
+      return new Intl.NumberFormat("vi-VN").format(amount);
     },
   },
 };
